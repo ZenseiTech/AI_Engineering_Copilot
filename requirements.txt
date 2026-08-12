@@ -6,3 +6,6 @@ asyncpg
 pgvector
 pydantic
 redis
+pyyaml
+pydantic-settings
+python-json-logger

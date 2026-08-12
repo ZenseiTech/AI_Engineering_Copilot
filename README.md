@@ -60,7 +60,7 @@
 2.  Export env variables
 
         export GITHUB_TOKEN="your_token"
-        export GITHUB_REPO="your-org/your-docs-repo"
+        export GITHUB_REPO="ZenseiTech/your-docs-repo"
         export GITHUB_BRANCH="master"
         export GEMINI_API_KEY="your-gemini-api-key"
 
