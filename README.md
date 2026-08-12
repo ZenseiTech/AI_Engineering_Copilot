@@ -71,17 +71,21 @@
 
         asyncio.run(init_db())
 
-4.  To run the service
+4.  Ingest data
+
+        python -m app.ingestion.github_sync
+
+5.  To run the service
 
         fastapi dev main.py
 
         If you are using Uvicorn directly, run:
 
-            uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+            python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-5.  Query stream endpoint via Curl
+6.  Query stream endpoint via Curl
 
-        curl -N "http://localhost:8000/api/v1/chat/stream?prompt=How%20to%20build%020project?"
+        curl -N "http://localhost:8000/api/v1/chat/agent?prompt=How%20to%20build%020project?"
 
 ### Docker info
 
