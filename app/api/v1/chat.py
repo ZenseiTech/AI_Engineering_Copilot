@@ -2,7 +2,7 @@
 from app.guardrails.input_filter import sanitize_dev_prompt
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
-from app.agents.loop import run_agent_loop
+from app.agent.loop import run_agent_loop
 import logging
 
 logger = logging.getLogger(__name__)

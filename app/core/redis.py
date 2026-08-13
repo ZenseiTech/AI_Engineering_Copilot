@@ -9,11 +9,13 @@ logger = logging.getLogger("copilot.redis")
 # Default Redis URL (Docker container port)
 REDIS_URL = "redis://localhost:6379/0"
 
+
 class RedisManager:
     """
-    Async Redis Manager for connection pooling, semantic query caching, 
+    Async Redis Manager for connection pooling, semantic query caching,
     and fast session management.
     """
+
     def __init__(self):
         self.redis_client: Optional[Redis] = None
 
@@ -21,10 +23,7 @@ class RedisManager:
         """Initialize the async Redis connection pool."""
         try:
             self.redis_client = aioredis.from_url(
-                url, 
-                encoding="utf-8", 
-                decode_responses=True,
-                max_connections=20
+                url, encoding="utf-8", decode_responses=True, max_connections=20
             )
             # Test ping
             await self.redis_client.ping()
@@ -43,6 +42,9 @@ class RedisManager:
         """
         Retrieves a cached answer for a developer query if available.
         """
+        logger.info(
+            f"Attempting to retrieve cached response for query hash: {query_hash}"
+        )
         if not self.redis_client:
             return None
         try:
@@ -55,25 +57,25 @@ class RedisManager:
         return None
 
     async def set_cached_response(
-        self, 
-        query_hash: str, 
-        response_payload: dict, 
-        ttl_seconds: int = 86400  # Default 24-hour cache TTL
+        self,
+        query_hash: str,
+        response_payload: dict,
+        ttl_seconds: int = 86400,  # Default 24-hour cache TTL
     ):
         """
         Caches a response payload to avoid re-running embeddings + LLM generation.
         """
+        logger.info(f"Attempting to cache response for query hash: {query_hash}")
         if not self.redis_client:
             return
         try:
             await self.redis_client.setex(
-                f"doc_cache:{query_hash}",
-                ttl_seconds,
-                json.dumps(response_payload)
+                f"doc_cache:{query_hash}", ttl_seconds, json.dumps(response_payload)
             )
             logger.info(f"Cached response for query hash: {query_hash}")
         except Exception as e:
             logger.warning(f"Redis SET failed: {e}")
+
 
 # Global Redis Singleton instance
 redis_manager = RedisManager()
