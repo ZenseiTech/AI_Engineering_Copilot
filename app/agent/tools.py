@@ -4,14 +4,17 @@ from app.core.database import AsyncSessionLocal
 from app.rag.embeddings import get_gemini_embedding
 import httpx
 from app.rag.retriever import hybrid_retrieve_docs
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # --- Tool Definitions ---
-
-
 async def search_internal_docs(query: str) -> list[dict]:
     """
     Searches internal developer documentation via hybrid pgvector retrieval.
     """
+    logger.info(f"Searching internal docs for query: {query}")
     # 1. Generate the query vector embedding
     query_vector = await get_gemini_embedding(query)
 

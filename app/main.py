@@ -9,13 +9,14 @@ from app.core.redis import redis_manager
 import logging
 from app.core.config import config
 
+logger = logging.getLogger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # 1. Initialize logging dictConfig from config.yaml on startup
     init_logging()
 
-    logger = logging.getLogger(__name__)
     logger.info("Application starting up: %s v%s", config.app.name, config.app.version)
 
     # Startup: Connect to Redis
